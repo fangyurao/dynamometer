@@ -38,7 +38,8 @@ import javax.management.StandardMBean;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.StorageType;
+//import org.apache.hadoop.fs.StorageType;
+import org.apache.hadoop.hdfs.StorageType;
 import org.apache.hadoop.hdfs.DFSConfigKeys;
 import org.apache.hadoop.hdfs.protocol.Block;
 import org.apache.hadoop.hdfs.protocol.BlockListAsLongs;
@@ -975,12 +976,14 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
   public synchronized ReplicaHandler createRbw(
       StorageType storageType, ExtendedBlock b,
       boolean allowLazyPersist) throws IOException {
-    return createTemporary(storageType, b, false);
+    //return createTemporary(storageType, b, false);
+    return createTemporary(storageType, b);
   }
 
   @Override // FsDatasetSpi
   public synchronized ReplicaHandler createTemporary(
-      StorageType storageType, ExtendedBlock b, boolean isTransfer) throws IOException {
+      //StorageType storageType, ExtendedBlock b, boolean isTransfer) throws IOException {
+      StorageType storageType, ExtendedBlock b) throws IOException {
     if (isValidBlock(b)) {
       throw new ReplicaAlreadyExistsException("Block " + b +
           " is valid, and cannot be written to.");
@@ -994,7 +997,7 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
     return new ReplicaHandler(binfo, null);
   }
 
-  synchronized InputStream getBlockInputStream(ExtendedBlock b
+  /*synchronized InputStream getBlockInputStream(ExtendedBlock b
   ) throws IOException {
     BInfo binfo = getBlockMap(b).get(b.getLocalBlock());
     if (binfo == null) {
@@ -1002,7 +1005,7 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
     }
 
     return binfo.getIStream();
-  }
+  }*/
 
   @Override // FsDatasetSpi
   public synchronized InputStream getBlockInputStream(ExtendedBlock b,
@@ -1227,7 +1230,7 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
   @Override // FsDatasetSpi
   public Replica updateReplicaUnderRecovery(ExtendedBlock oldBlock,
       long recoveryId,
-      long newBlockId,
+      //long newBlockId,
       long newlength) throws IOException {
     return getBInfo(oldBlock);
   }
@@ -1308,10 +1311,10 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
     throw new UnsupportedOperationException();
   }
 
-  @Override
+  /*@Override
   public List<FsVolumeSpi> getVolumes() {
     throw new UnsupportedOperationException();
-  }
+  }*/
 
   @Override
   public void addVolume(

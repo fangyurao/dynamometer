@@ -4,17 +4,22 @@
  */
 buildscript {
   repositories {
-    maven {
-      url "https://plugins.gradle.org/m2/"
-    }
+    //mavenCentral()//pub back by Fang-Yu
+    maven { url "https://plugins.gradle.org/m2/" }//this line is necessary, otherwise we cannot even execute gradle clean
+    maven { url "https://repository.cloudera.com/cloudera/cdh-releases-rcs" }
   }
+  /*repositories {
+    maven { url "https://repository.cloudera.com/cloudera/cdh-releases-rcs" }
+    //mavenCentral()
+  }*/ 
   dependencies {
     // license-gradle plugin: https://github.com/hierynomus/license-gradle-plugin
     classpath "gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin:0.14.0"
   }
 }
 
-def hadoopVersion = '2.7.5'
+def hadoopVersion = '2.6.0-cdh5.15.0'
+//def hadoopVersion = '2.7.5'
 ext.deps = [
   hadoop: [
     hdfs: "org.apache.hadoop:hadoop-hdfs:${hadoopVersion}",
@@ -49,17 +54,17 @@ subprojects {
   apply plugin: 'java'
   apply plugin: 'eclipse'
   apply plugin: 'idea'
-  apply plugin: 'license'
+  //apply plugin: 'license'
 
   sourceCompatibility = 1.7
 
-  license {
+  /*license {
     header rootProject.file('license_header')
     // Set the year in the license
     ext.year = Calendar.getInstance().get(Calendar.YEAR)
     skipExistingHeaders = true
     strictCheck = true
-  }
+  }*/
 
   configurations {
     hadoopRuntime.extendsFrom(runtime)

@@ -20,6 +20,9 @@
 #   `com.linkedin.dynamometer.SimulatedDataNodes` class will be used to start multiple
 #   DataNodes within the same JVM, and they will store their block files in memory.
 
+echo "start-component-modified.sh 2018/06/22 3:00pm"
+#export HADOOP_ROOT_LOGGER=DEBUG,console
+
 component="$1"
 if [[ "$component" != "datanode" && "$component" != "namenode" ]]; then
   echo "Unknown component type: '${component}'"
@@ -96,7 +99,8 @@ export HADOOP_CONF_DIR=${confDir}
 export YARN_CONF_DIR=${confDir}
 export HADOOP_LOG_DIR=${logDir}
 export HADOOP_PID_DIR=${pidDir}
-export HADOOP_CLASSPATH="$extraClasspathDir"
+#export HADOOP_CLASSPATH="$extraClasspathDir"
+export HADOOP_LIBEXEC_DIR="$hadoopHome/libexec"
 echo "Environment variables are set as:"
 echo "(note that this doesn't include changes made by hadoop-env.sh)"
 printenv
@@ -166,6 +170,7 @@ if [ "$component" = "datanode" ]; then
   localHostname=`hostname`
 
   read -r -d '' datanodeClusterConfigs <<EOF
+    -D dfs.namenode.servicerpc-address=${nnServiceRpcAddress}
     -D fs.defaultFS=${nnServiceRpcAddress}
     -D dfs.datanode.hostname=${localHostname}
     -D dfs.datanode.data.dir=${dataDirs}
@@ -180,9 +185,14 @@ if [ "$component" = "datanode" ]; then
     ${listingFiles[@]}
 EOF
 
-  echo "Executing the following:"
+  echo "Executing the following: (=test= added by FY)"
   printf "${HADOOP_HOME}/bin/hadoop jar dynamometer.jar com.linkedin.dynamometer.SimulatedDataNodes "
   printf "$DN_ADDITIONAL_ARGS $datanodeClusterConfigs\n"
+  
+  #the following two lines are added by FY
+  echo "hadoop classpath (added by FY)"
+  ${HADOOP_HOME}/bin/hadoop classpath
+  
   ${HADOOP_HOME}/bin/hadoop jar dynamometer.jar com.linkedin.dynamometer.SimulatedDataNodes \
     $DN_ADDITIONAL_ARGS $datanodeClusterConfigs &
   launchSuccess="$?"
@@ -275,6 +285,17 @@ EOF
 EOF
 
   echo "Executing the following:"
+  echo "=test="
+  #export HADOOP_COMMON_HOME=/opt/cloudera/parcels/CDH/jars
+  echo "HADOOP_HOME=" + $HADOOP_HOME
+  echo "HADOOP_CONF_DIR=" + $HADOOP_CONF_DIR
+  echo "HADOOP_HDFS_HOME=" + $HADOOP_HDFS_HOME
+  echo "HADOOP_COMMON_HOME=" + $HADOOP_COMMON_HOME
+  echo "HADOOP_CLASSPATH=" + $HADOOP_CLASSPATH
+  HADOOP_HOME=${HADOOP_HOME} HADOOP_CONF_DIR=${HADOOP_CONF_DIR} \
+  HADOOP_HDFS_HOME=${HADOOP_HDFS_HOME} HADOOP_COMMON_HOME=${HADOOP_COMMON_HOME} \
+  ${HADOOP_HOME}/bin/hadoop classpath
+
   echo "${HADOOP_HOME}/sbin/hadoop-daemon.sh start namenode $namenodeConfigs $NN_ADDITIONAL_ARGS"
   if ! ${HADOOP_HOME}/sbin/hadoop-daemon.sh start namenode $namenodeConfigs $NN_ADDITIONAL_ARGS; then
     echo "Unable to launch NameNode; exiting."
@@ -315,6 +336,7 @@ function cleanup {
   rm -rf "$baseDir"
 }
 
+#the following line is uncommented by FYR
 trap cleanup EXIT
 
 echo "Waiting for parent process (PID: $PPID) OR $component process to exit"

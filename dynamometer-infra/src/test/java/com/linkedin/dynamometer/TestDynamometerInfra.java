@@ -154,7 +154,7 @@ public class TestDynamometerInfra {
     conf.setBoolean(YarnConfiguration.YARN_MINICLUSTER_FIXED_PORTS, true);
     conf.setBoolean(YarnConfiguration.YARN_MINICLUSTER_USE_RPC, true);
     conf.setInt(YarnConfiguration.RM_SCHEDULER_MINIMUM_ALLOCATION_MB, 128);
-    conf.setBoolean(YarnConfiguration.NODE_LABELS_ENABLED, true);
+    //conf.setBoolean(YarnConfiguration.NODE_LABELS_ENABLED, true);
     for (String q : new String[] { "root", "root.default" } ) {
       conf.setInt(CapacitySchedulerConfiguration.PREFIX + q + "." + CapacitySchedulerConfiguration.CAPACITY, 100);
       String accessibleNodeLabelPrefix = CapacitySchedulerConfiguration.PREFIX + q + "." +
