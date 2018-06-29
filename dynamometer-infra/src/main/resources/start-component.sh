@@ -20,8 +20,12 @@
 #   `com.linkedin.dynamometer.SimulatedDataNodes` class will be used to start multiple
 #   DataNodes within the same JVM, and they will store their block files in memory.
 
-echo "start-component-modified.sh 2018/06/22 3:00pm"
+echo "start-component-modified.sh 2018/06/28 9:00pm"
 #export HADOOP_ROOT_LOGGER=DEBUG,console
+
+#export HADOOP_ROOT_LOGGER="DEBUG,DRFA" FY: DRFA seems not supported, really strange
+export HADOOP_ROOT_LOGGER="DEBUG,console" #FY: this line works, we could also replace INFO with DEBUG
+
 
 component="$1"
 if [[ "$component" != "datanode" && "$component" != "namenode" ]]; then
@@ -296,10 +300,14 @@ EOF
   HADOOP_HDFS_HOME=${HADOOP_HDFS_HOME} HADOOP_COMMON_HOME=${HADOOP_COMMON_HOME} \
   ${HADOOP_HOME}/bin/hadoop classpath
 
+  echo "before invoking hadoop-daemon.sh (added by FY)"
+  echo "nn additional args is: (added by FY)" + $NN_ADDITIONAL_ARGS 
   echo "${HADOOP_HOME}/sbin/hadoop-daemon.sh start namenode $namenodeConfigs $NN_ADDITIONAL_ARGS"
   if ! ${HADOOP_HOME}/sbin/hadoop-daemon.sh start namenode $namenodeConfigs $NN_ADDITIONAL_ARGS; then
     echo "Unable to launch NameNode; exiting."
     exit 1
+  else 
+    echo "after invoking hadoop-daemon.sh (added by FY), the opposite case of unable to launch NameNode"
   fi
   componentPIDFile="$pidDir/hadoop-`whoami`-$component.pid"
   while [ ! -f "$componentPIDFile" ]; do sleep 1; done
