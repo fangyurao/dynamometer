@@ -13,5 +13,7 @@ export HADOOP_MAPRED_HOME=$( ([[ ! '/opt/cloudera/parcels/CDH/lib/hadoop-mapredu
 export YARN_OPTS="-Xmx825955249 -Djava.net.preferIPv4Stack=true $YARN_OPTS"
 export HADOOP_CLIENT_OPTS="-Djava.net.preferIPv4Stack=true $HADOOP_CLIENT_OPTS"
 
-echo "added by FY to see if this file (hadoop-env.sh) is executed"
-echo "YARN_OPTS after updated in hadoop-env.sh: " ${YARN_OPTS}
+#the following statement is added by FY, this setting is important
+export HADOOP_HEAPSIZE="40960"
+
+echo "added by FYR on 2018/07/16 9.50am"
