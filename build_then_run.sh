@@ -5,6 +5,8 @@ gradle clean
 
 #Fang-Yu: the directory of ~/dynamometer/dynamometer-infra/src/main/lib does not exist initially
 #so we need to create one for the first execution
+mkdir -p ~/dynamometer/dynamometer-infra/src/main/lib
+
 rm ~/dynamometer/dynamometer-infra/src/main/lib/dynamometer-infra-0.1.0-SNAPSHOT.jar
 rm ~/dynamometer/dynamometer-infra/src/main/lib/dynamometer.jar
 
@@ -21,7 +23,9 @@ cp ~/dynamometer/dynamometer-infra/src/main/lib/dynamometer-infra-0.1.0-SNAPSHOT
 -conf_path dyno_conf \
 -fs_image_dir hdfs:///dyno/fsimage \
 --block_list_path hdfs:///dyno/blocks \
--master_memory_mb 16384 \
--datanode_memory_mb 1024 \
--namenode_memory_mb 16384
-
+-master_memory_mb 8192 \
+-datanode_memory_mb 12288 \
+-namenode_memory_mb 40960 \
+-datanode_vcores 1 \
+-namenode_vcores 4 \
+-datanode_launch_delay 10s

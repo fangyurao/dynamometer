@@ -20,11 +20,11 @@
 #   `com.linkedin.dynamometer.SimulatedDataNodes` class will be used to start multiple
 #   DataNodes within the same JVM, and they will store their block files in memory.
 
-echo "start-component-modified.sh 2018/06/28 9:00pm"
+echo "start-component-modified.sh 2018/07/19 2.30pm"
 #export HADOOP_ROOT_LOGGER=DEBUG,console
 
 #export HADOOP_ROOT_LOGGER="DEBUG,DRFA" FY: DRFA seems not supported, really strange
-export HADOOP_ROOT_LOGGER="DEBUG,console" #FY: this line works, we could also replace INFO with DEBUG
+export HADOOP_ROOT_LOGGER="INFO,console" #FY: this line works, we could also replace INFO with DEBUG
 
 
 component="$1"
@@ -285,8 +285,10 @@ EOF
   -D dfs.cluster.administrators="*"
   -D dfs.block.replicator.classname=com.linkedin.dynamometer.BlockPlacementPolicyAlwaysSatisfied
   -D hadoop.security.impersonation.provider.class=com.linkedin.dynamometer.AllowAllImpersonationProvider
+  -D dfs.namenode.replication.interval=1200
   ${configOverrides}
 EOF
+#dfs.namenode.replication.interval=1200 is added by FY
 
   echo "Executing the following:"
   echo "=test="
