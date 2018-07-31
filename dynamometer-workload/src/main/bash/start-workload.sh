@@ -25,5 +25,25 @@ for f in ${script_pwd}/lib/*.jar; do
     export HADOOP_CLASSPATH="$HADOOP_CLASSPATH:$f"
   fi
 done
+
+echo "pwd:" #added by FY 
+pwd #added by FY
+echo "hadoop_cmd: $hadoop_cmd" #added by FY
+echo "script_pwd: $script_pwd" #added by FY
+echo "HADOOP_CLASSPATH: $HADOOP_CLASSPATH" #added by FY
+#echo "PATH: $PATH" #added by FY
+echo "HADOOP_HOME: ${HADOOP_HOME}" #added by FY
+
+echo "hadoop classpath (before update added by FY)"
+${HADOOP_HOME}/bin/hadoop classpath #added by FY
+
+export HADOOP_CLASSPATH=/home/systest/dynamometer/dynamometer-workload/src/main/lib/*
+echo "HADOOP_CLASSPATH: $HADOOP_CLASSPATH" #added by FY
+
+echo "hadoop classpath (after update added by FY)"
+${HADOOP_HOME}/bin/hadoop classpath #added by FY
+
+
+
 "$hadoop_cmd" jar ${script_pwd}/lib/dynamometer-workload-*.jar \
   com.linkedin.dynamometer.workloadgenerator.WorkloadDriver "$@"

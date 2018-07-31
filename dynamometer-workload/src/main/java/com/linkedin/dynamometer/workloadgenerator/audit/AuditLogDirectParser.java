@@ -30,8 +30,11 @@ public class AuditLogDirectParser implements AuditCommandParser {
   public static final String AUDIT_START_TIMESTAMP_KEY = "auditreplay.log-start-time.ms";
 
   private static final Pattern MESSAGE_ONLY_PATTERN = Pattern.compile("^([0-9-]+ [0-9:,]+) [^:]+: (.+)$");
+  //private static final Splitter.MapSplitter AUDIT_SPLITTER =
+  //    Splitter.on("\t").trimResults().omitEmptyStrings().withKeyValueSeparator("=");
+  //the following line is modified by Fang-Yu
   private static final Splitter.MapSplitter AUDIT_SPLITTER =
-      Splitter.on("\t").trimResults().omitEmptyStrings().withKeyValueSeparator("=");
+      Splitter.on("\t").trimResults().omitEmptyStrings().withKeyValueSeparator("#");
   private static final Splitter SPACE_SPLITTER = Splitter.on(" ").trimResults().omitEmptyStrings();
   private static final DateFormat AUDIT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss,SSS");
   static {

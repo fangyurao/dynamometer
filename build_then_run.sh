@@ -21,8 +21,8 @@ cp ~/dynamometer/dynamometer-infra/src/main/lib/dynamometer-infra-0.1.0-SNAPSHOT
 ./dynamometer-infra/src/main/bash/start-dynamometer-cluster.sh \
 -hadoop_binary_path /home/systest/hadoop-2.6.0-cdh5.15.0.tar.gz \
 -conf_path dyno_conf \
--fs_image_dir hdfs:///dyno/fsimage \
---block_list_path hdfs:///dyno/blocks \
+-fs_image_dir hdfs:///user/systest/dyno/fsimage \
+--block_list_path hdfs:///user/systest/dyno/blocks \
 -master_memory_mb 8192 \
 -datanode_memory_mb 12288 \
 -namenode_memory_mb 40960 \

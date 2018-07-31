@@ -7,6 +7,18 @@
     <value>hdfs://fangyu-build-05-hosts-1.gce.cloudera.com:8020</value>
   </property>
   <property>
+    <name>hadoop.proxyuser.systest.groups</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.systest.hosts</name>
+    <value>*</value>
+  </property>
+  <property> 
+    <name>hadoop.security.group.mapping</name>
+    <value>org.apache.hadoop.security.NullGroupsMapping</value>
+  </property>
+  <property>
     <name>fs.trash.interval</name>
     <value>1</value>
   </property>

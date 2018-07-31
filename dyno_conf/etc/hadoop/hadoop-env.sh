@@ -16,4 +16,4 @@ export HADOOP_CLIENT_OPTS="-Djava.net.preferIPv4Stack=true $HADOOP_CLIENT_OPTS"
 #the following statement is added by FY, this setting is important
 export HADOOP_HEAPSIZE="40960"
 
-echo "added by FYR on 2018/07/19 2.30pm"
+echo "added by FYR on 2018/07/30 8am"
