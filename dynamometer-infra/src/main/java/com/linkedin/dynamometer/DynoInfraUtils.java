@@ -293,9 +293,11 @@ public class DynoInfraUtils {
       log.debug("Interrupted block report thread; joining");
       blockReportThread.join(5000);
       if (blockReportThread.isAlive()) {
-        log.debug("Joined block report thread");
-      } else {
+        //log.debug("Joined block report thread");//commented out by Fang-Yu
         log.warn("Unable to join block report thread after 5s; continuing");
+      } else {
+        //log.warn("Unable to join block report thread after 5s; continuing");//commented out by Fang-Yu
+        log.debug("Joined block report thread");
       }
     }
   }
