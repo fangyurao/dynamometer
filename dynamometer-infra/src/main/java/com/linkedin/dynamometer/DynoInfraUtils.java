@@ -247,6 +247,7 @@ public class DynoInfraUtils {
                 log.info(String.format("Queueing %d Datanodes for block report: %s", datanodesToReport.size(),
                     Joiner.on(",").join(datanodesToReport)));
                 DatanodeInfo[] datanodes = dfs.getDataNodeStats();
+                log.info(String.format("datanodes.length: %d", datanodes.length));//added by FY
                 int cnt = 0;
                 for (DatanodeInfo datanode : datanodes) {
                   if (datanodesToReport.contains(datanode.getXferAddr(true))) {
@@ -276,9 +277,13 @@ public class DynoInfraUtils {
       blockReportThread.setUncaughtExceptionHandler(new YarnUncaughtExceptionHandler());
       blockReportThread.start();
     }
-    log.info("Waiting for MissingBlocks to fall below " + totalBlocks*0.0001 + "...");
+    //log.info("Waiting for MissingBlocks to fall below " + totalBlocks*0.0001 + "...");//original 
+    log.info("Waiting for MissingBlocks to fall below " + totalBlocks*0.001 + "...");//added by FY
+    //waitForNameNodeJMXValue("Number of missing blocks", FSNAMESYSTEM_JMX_QUERY, JMX_MISSING_BLOCKS,
+    //    totalBlocks*0.0001, totalBlocks*0.0001, true, nameNodeProperties, shouldExit, log);
+    //The change to the threshold from 0.0001 to 0.001 is made by FY
     waitForNameNodeJMXValue("Number of missing blocks", FSNAMESYSTEM_JMX_QUERY, JMX_MISSING_BLOCKS,
-        totalBlocks*0.0001, totalBlocks*0.0001, true, nameNodeProperties, shouldExit, log);
+        totalBlocks*0.001, totalBlocks*0.001, true, nameNodeProperties, shouldExit, log);
     log.info("Waiting for UnderReplicatedBlocks to fall below " + totalBlocks*0.01 + "...");
     waitForNameNodeJMXValue("Number of under replicated blocks", FSNAMESYSTEM_STATE_JMX_QUERY,
         JMX_UNDER_REPLICATED_BLOCKS, totalBlocks*0.01, totalBlocks*0.001, true, nameNodeProperties, shouldExit, log);

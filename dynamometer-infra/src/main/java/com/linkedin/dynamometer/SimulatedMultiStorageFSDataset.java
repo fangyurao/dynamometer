@@ -559,6 +559,7 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
     }
   }
 
+  //modified by FY
   public synchronized void injectBlocks(String bpid,
       Iterable<? extends Block> injectBlocks) throws IOException {
     ExtendedBlock blk = new ExtendedBlock();
@@ -582,14 +583,29 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
 
       for (Block b: injectBlocks) {
         BInfo binfo = new BInfo(bpid, b, false);
-        blockMaps.get((int) (b.getBlockId() % storages.size())).put(binfo.theBlock, binfo);
+        long indexOfBlock;
+        if (b.getBlockId() < 0) {
+          indexOfBlock = (b.getBlockId() * (-1)) % storages.size();
+        } else {
+          indexOfBlock = b.getBlockId() % storages.size();
+        }
+        //blockMaps.get((int) (b.getBlockId() % storages.size())).put(binfo.theBlock, binfo);
+        blockMaps.get((int) indexOfBlock).put(binfo.theBlock, binfo);
       }
     }
   }
 
   /** Get the storage that a given block lives within. */
+  //modified by FY
   private SimulatedStorage getStorage(Block b) {
-    return storages.get((int) (b.getBlockId() % storages.size()));
+    long indexOfBlock;
+    if (b.getBlockId() < 0) {
+      indexOfBlock = (b.getBlockId() * (-1)) % storages.size();
+    } else {
+      indexOfBlock = b.getBlockId() % storages.size();
+    }
+    //return storages.get((int) (b.getBlockId() % storages.size()));
+    return storages.get((int) indexOfBlock);
   }
 
   /**
@@ -997,7 +1013,8 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
     return new ReplicaHandler(binfo, null);
   }
 
-  /*synchronized InputStream getBlockInputStream(ExtendedBlock b
+  //reverted by FY
+  protected synchronized InputStream getBlockInputStream(ExtendedBlock b
   ) throws IOException {
     BInfo binfo = getBlockMap(b).get(b.getLocalBlock());
     if (binfo == null) {
@@ -1005,7 +1022,7 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
     }
 
     return binfo.getIStream();
-  }*/
+  }
 
   @Override // FsDatasetSpi
   public synchronized InputStream getBlockInputStream(ExtendedBlock b,

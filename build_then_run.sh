@@ -24,8 +24,8 @@ cp ~/dynamometer/dynamometer-infra/src/main/lib/dynamometer-infra-0.1.0-SNAPSHOT
 -fs_image_dir hdfs:///user/systest/dyno/fsimage \
 --block_list_path hdfs:///user/systest/dyno/blocks \
 -master_memory_mb 8192 \
--datanode_memory_mb 12288 \
--namenode_memory_mb 40960 \
+-datanode_memory_mb 4096 \
+-namenode_memory_mb 51200 \
 -datanode_vcores 1 \
 -namenode_vcores 4 \
 -datanode_launch_delay 10s
