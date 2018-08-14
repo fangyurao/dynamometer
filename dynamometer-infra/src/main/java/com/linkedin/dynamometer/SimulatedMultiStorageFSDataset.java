@@ -24,6 +24,8 @@ import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 import java.nio.channels.ClosedChannelException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -979,7 +981,7 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
           + " does not exist, and cannot be appended to.");
     }
     if (binfo.isFinalized()) {
-      throw new ReplicaAlreadyExistsException("Block " + b
+      throw new ReplicaAlreadyExistsException("(in recoverRbw) Block " + b
           + " is valid, and cannot be written to.");
     }
     map.remove(b);
@@ -1001,7 +1003,7 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
       //StorageType storageType, ExtendedBlock b, boolean isTransfer) throws IOException {
       StorageType storageType, ExtendedBlock b) throws IOException {
     if (isValidBlock(b)) {
-      throw new ReplicaAlreadyExistsException("Block " + b +
+      throw new ReplicaAlreadyExistsException("(in createTemporary) Block " + b +
           " is valid, and cannot be written to.");
     }
     if (isValidRbw(b)) {
@@ -1147,13 +1149,15 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
    * length.
    *
    */
-  static private class SimulatedOutputStream extends OutputStream {
+  static private class SimulatedOutputStream extends FileOutputStream {
     long length = 0;
-
+    
+    //modified by FY
     /**
      * constructor for Simulated Output Steram
      */
-    SimulatedOutputStream() {
+    SimulatedOutputStream() throws FileNotFoundException {
+      super("/dev/null");
     }
 
     /**
