@@ -28,4 +28,4 @@ cp ~/dynamometer/dynamometer-infra/src/main/lib/dynamometer-infra-0.1.0-SNAPSHOT
 -namenode_memory_mb 51200 \
 -datanode_vcores 1 \
 -namenode_vcores 4 \
--datanode_launch_delay 900s
+-datanode_launch_delay 30s

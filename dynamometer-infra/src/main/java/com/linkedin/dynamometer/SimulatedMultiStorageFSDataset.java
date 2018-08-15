@@ -1003,8 +1003,9 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
       //StorageType storageType, ExtendedBlock b, boolean isTransfer) throws IOException {
       StorageType storageType, ExtendedBlock b) throws IOException {
     if (isValidBlock(b)) {
-      throw new ReplicaAlreadyExistsException("(in createTemporary) Block " + b +
-          " is valid, and cannot be written to.");
+      //the following is temporarily commented out by FY to see the effect
+      //throw new ReplicaAlreadyExistsException("(in createTemporary) Block " + b +
+      //    " is valid, and cannot be written to.");
     }
     if (isValidRbw(b)) {
       throw new ReplicaAlreadyExistsException("Block " + b +
