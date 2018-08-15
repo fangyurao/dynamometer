@@ -1006,6 +1006,12 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
       //the following is temporarily commented out by FY to see the effect
       //throw new ReplicaAlreadyExistsException("(in createTemporary) Block " + b +
       //    " is valid, and cannot be written to.");
+      //the following is temporarily added by FY to see the effect
+      //BInfo binfo = new BInfo(b.getBlockPoolId(), b.getLocalBlock(), false);
+      //BInfo binfo = null;
+      //binfo = getBlockMap(b).get(binfo.theBlock);
+      //getBlockMap(b).put(binfo.theBlock, binfo);
+      //return new ReplicaHandler(binfo, null);
     }
     if (isValidRbw(b)) {
       throw new ReplicaAlreadyExistsException("Block " + b +

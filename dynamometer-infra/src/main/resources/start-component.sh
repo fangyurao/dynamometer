@@ -20,7 +20,7 @@
 #   `com.linkedin.dynamometer.SimulatedDataNodes` class will be used to start multiple
 #   DataNodes within the same JVM, and they will store their block files in memory.
 
-echo "start-component-modified.sh 2018/08/14 3.50pm"
+echo "start-component-modified.sh 2018/08/15 12pm"
 #export HADOOP_ROOT_LOGGER=DEBUG,console
 
 #export HADOOP_ROOT_LOGGER="DEBUG,DRFA" FY: DRFA seems not supported, really strange
