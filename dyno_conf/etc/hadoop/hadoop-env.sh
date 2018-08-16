@@ -18,4 +18,4 @@ export HADOOP_HEAPSIZE="51200"
 export HADOOP_OPTS="-XX:+HeapDumpOnOutOfMemoryError"
 export HADOOP_DATANODE_OPTS="-Xmx20m"
 
-#echo "added by FYR on 2018/08/14 9am"
+#echo "added by FYR on 2018/08/16 10am"

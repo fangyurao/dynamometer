@@ -651,6 +651,8 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
         }
       }
     } catch (IOException ioe) {
+      DataNode.LOG.info("catched IOException in getBlockReport");
+      DataNode.LOG.info("message: ", ioe);
       // Ignore
     }
     return report.build();
@@ -790,6 +792,8 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
       Block b = new Block(blockId);
       r = getBlockMap(b, bpid).get(b);
     } catch (IOException ioe) {
+      DataNode.LOG.info("catched IOException in getReplicaString");
+      DataNode.LOG.info("message: ", ioe);
       // Ignore
     }
     return r == null? "null": r.toString();
@@ -805,6 +809,8 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
       }
       return new Block(blkid, binfo.getGenerationStamp(), binfo.getNumBytes());
     } catch (IOException ioe) {
+      DataNode.LOG.info("catched IOException in getStoredBlock");
+      DataNode.LOG.info("message: ", ioe);
       return null;
     }
   }
@@ -860,6 +866,8 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
     try {
       return getBlockMap(b).get(b.getLocalBlock());
     } catch (IOException ioe) {
+      DataNode.LOG.info("catched IOException in getBInfo");
+      DataNode.LOG.info("message: ", ioe);
       return null;
     }
   }
@@ -901,6 +909,8 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
     try {
       checkBlock(b, 0, ReplicaState.FINALIZED);
     } catch (IOException e) {
+      DataNode.LOG.info("catched IOException in isValidBlock");
+      DataNode.LOG.info("message: ", e);
       return false;
     }
     return true;
@@ -912,6 +922,8 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
     try {
       checkBlock(b, 0, ReplicaState.RBW);
     } catch (IOException e) {
+      DataNode.LOG.info("catched IOException in isValidRbw");
+      DataNode.LOG.info("message: ", e);
       return false;
     }
     return true;
