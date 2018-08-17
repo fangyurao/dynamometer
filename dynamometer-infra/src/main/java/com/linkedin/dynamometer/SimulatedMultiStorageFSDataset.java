@@ -1016,8 +1016,8 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
       StorageType storageType, ExtendedBlock b) throws IOException {
     if (isValidBlock(b)) {
       //the following is temporarily commented out by FY to see the effect
-      //throw new ReplicaAlreadyExistsException("(in createTemporary) Block " + b +
-      //    " is valid, and cannot be written to.");
+      throw new ReplicaAlreadyExistsException("(in createTemporary) Block " + b +
+          " is valid, and cannot be written to.");
       //the following is temporarily added by FY to see the effect
       //BInfo binfo = new BInfo(b.getBlockPoolId(), b.getLocalBlock(), false);
       //BInfo binfo = null;

@@ -20,7 +20,7 @@
 #   `com.linkedin.dynamometer.SimulatedDataNodes` class will be used to start multiple
 #   DataNodes within the same JVM, and they will store their block files in memory.
 
-echo "start-component-modified.sh 2018/08/16 10am"
+echo "start-component-modified.sh 2018/08/16 5pm"
 #export HADOOP_ROOT_LOGGER=DEBUG,console
 
 #export HADOOP_ROOT_LOGGER="DEBUG,DRFA" FY: DRFA seems not supported, really strange
@@ -184,6 +184,7 @@ if [ "$component" = "datanode" ]; then
     -D dfs.datanode.directoryscan.interval=-1
     -D fs.du.interval=43200000
     -D fs.getspaceused.jitterMillis=21600000
+    -D dfs.blockreport.intervalMsec=21600000
     ${configOverrides}
     ${bpId}
     ${listingFiles[@]}
