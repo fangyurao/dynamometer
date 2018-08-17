@@ -28,11 +28,13 @@ import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.nio.channels.ClosedChannelException;
 import java.util.ArrayList;
+import java.util.Comparator;//added by Wei-Chiu
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;//added by Wei-Chiu
 
 import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
@@ -335,7 +337,21 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
    */
   private static class SimulatedBPStorage {
     private long used;    // in bytes
-    private final Map<Block, BInfo> blockMap = new HashMap<>();
+    
+    //private final Map<Block, BInfo> blockMap = new HashMap<>();
+    //the following is added by Wei-Chiu
+    private static final Comparator<Object> LONG_AND_BLOCK_COMPARATOR
+        = new Comparator<Object>() {
+
+      @Override
+      public int compare(Object o1, Object o2) {
+        long lookup = ((Block) o1).getBlockId();
+        long stored = ((Block) o2).getBlockId();
+        return lookup > stored ? 1 : lookup < stored ? -1 : 0;
+      }
+    };
+
+    private final Map<Block, BInfo> blockMap = new TreeMap<>(LONG_AND_BLOCK_COMPARATOR);
 
     long getUsed() {
       return used;
@@ -577,11 +593,13 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
         }
       }
 
+      DataNode.LOG.info("before blockMaps init");
       List<Map<Block, BInfo>> blockMaps = new ArrayList<>();
       for (SimulatedStorage storage : storages) {
         storage.addBlockPool(bpid);
         blockMaps.add(storage.getBlockMap(bpid));
       }
+      DataNode.LOG.info("after blockMaps init");
 
       for (Block b: injectBlocks) {
         BInfo binfo = new BInfo(bpid, b, false);
@@ -593,6 +611,13 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
         }
         //blockMaps.get((int) (b.getBlockId() % storages.size())).put(binfo.theBlock, binfo);
         blockMaps.get((int) indexOfBlock).put(binfo.theBlock, binfo);
+        DataNode.LOG.info("storages.size() after put: " + storages.size());
+      }
+
+      //added by FY
+      DataNode.LOG.info("storages.size(): " + storages.size());
+      for (SimulatedStorage currentStorage : storages) {
+        DataNode.LOG.info("currentStorage.getBlockMap(bpid).size(): " + currentStorage.getBlockMap(bpid).size());
       }
     }
   }
@@ -909,7 +934,7 @@ public class SimulatedMultiStorageFSDataset extends SimulatedFSDataset {
     try {
       checkBlock(b, 0, ReplicaState.FINALIZED);
     } catch (IOException e) {
-      DataNode.LOG.info("catched IOException in isValidBlock");
+      DataNode.LOG.info("cattched IOException in isValidBlock");
       DataNode.LOG.info("message: ", e);
       return false;
     }
